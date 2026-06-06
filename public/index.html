@@ -1,117 +1,293 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rəna</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 45%, #fad0c4 100%);
-      position: relative;
-    }
-
-    .container {
-      text-align: center;
-      padding: 40px 24px;
-      background: rgba(255,255,255,0.22);
-      backdrop-filter: blur(10px);
-      border-radius: 28px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.18);
-      z-index: 2;
-      max-width: 700px;
-      width: calc(100% - 32px);
-      border: 1px solid rgba(255,255,255,0.35);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(34px, 7vw, 72px);
-      color: #fff;
-      text-shadow: 0 4px 14px rgba(0,0,0,0.18);
-    }
-
-    .subtitle {
-      margin-top: 18px;
-      font-size: clamp(18px, 3vw, 28px);
-      color: #fff;
-      line-height: 1.6;
-    }
-
-    .big-heart {
-      font-size: 70px;
-      margin: 18px 0 10px;
-      animation: pulse 1.4s infinite;
-      display: inline-block;
-      filter: drop-shadow(0 8px 10px rgba(0,0,0,0.15));
-    }
-
-    .note {
-      margin-top: 20px;
-      color: #fff;
-      font-size: 18px;
-      opacity: 0.95;
-    }
-
-    .floating-heart {
-      position: absolute;
-      color: rgba(255,255,255,0.85);
-      animation: floatUp linear infinite;
-      user-select: none;
-      pointer-events: none;
-      text-shadow: 0 6px 12px rgba(0,0,0,0.12);
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.18); }
-    }
-
-    @keyframes floatUp {
-      from {
-        transform: translateY(100vh) scale(0.8);
-        opacity: 0;
-      }
-      15% { opacity: 1; }
-      85% { opacity: 1; }
-      to {
-        transform: translateY(-20vh) scale(1.2);
-        opacity: 0;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEM Fayl Arxivi</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:'IBM Plex Sans',sans-serif;font-size:14px;background:#0f1117;color:#e2e8f0;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.topbar{background:#141720;border-bottom:1px solid #1e2330;padding:0 18px;height:50px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.logo{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;color:#e2e8f0;font-family:'IBM Plex Mono',monospace;letter-spacing:.04em}
+.logo-icon{width:28px;height:28px;background:#3b82f6;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.stat-chips{display:flex;gap:5px}
+.chip{background:#1a1f2e;border:1px solid #1e2330;border-radius:20px;padding:3px 10px;font-size:12px;color:#64748b;display:flex;align-items:center;gap:4px;font-family:'IBM Plex Mono',monospace}
+.chip b{font-weight:600}
+.chip.pdf b{color:#f87171}.chip.xl b{color:#4ade80}
+.main{display:flex;flex:1;overflow:hidden}
+.sidebar{width:220px;background:#141720;border-right:1px solid #1e2330;padding:12px;display:flex;flex-direction:column;gap:14px;flex-shrink:0;overflow-y:auto}
+.sec-label{font-size:10px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:'IBM Plex Mono',monospace}
+.type-btns{display:flex;gap:4px}
+.tbtn{flex:1;padding:5px 0;border-radius:6px;border:1px solid #1e2330;background:#1a1f2e;font-size:11px;cursor:pointer;color:#64748b;transition:all .15s;font-family:'IBM Plex Sans',sans-serif}
+.tbtn.a-all{background:#1e3a5f;border-color:#3b82f6;color:#93c5fd}
+.tbtn.a-pdf{background:#3b1a1a;border-color:#ef4444;color:#f87171}
+.tbtn.a-xl{background:#14301f;border-color:#22c55e;color:#4ade80}
+.sb-select{width:100%;font-size:12px;padding:6px 8px;border-radius:6px;border:1px solid #1e2330;background:#1a1f2e;color:#e2e8f0;outline:none;font-family:'IBM Plex Sans',sans-serif}
+.sb-select:focus{border-color:#3b82f6}
+.person-list{display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1}
+.pi{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;border-radius:6px;cursor:pointer;transition:background .1s;gap:6px}
+.pi:hover{background:#1a1f2e}
+.pi.active{background:#1e3a5f}
+.pi-name{font-size:12px;color:#cbd5e1;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pi.active .pi-name{color:#93c5fd}
+.pi-badges{display:flex;gap:3px;flex-shrink:0}
+.pb{font-size:10px;padding:2px 5px;border-radius:8px;font-weight:600;font-family:'IBM Plex Mono',monospace}
+.pb.pdf{background:#3b1a1a;color:#f87171}
+.pb.xl{background:#14301f;color:#4ade80}
+.content{flex:1;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0;overflow:hidden}
+.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sw{flex:1;min-width:160px;position:relative}
+.sw svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#64748b;pointer-events:none}
+.sw input{width:100%;padding:7px 9px 7px 32px;border-radius:6px;border:1px solid #1e2330;background:#141720;color:#e2e8f0;font-size:13px;outline:none;font-family:'IBM Plex Sans',sans-serif}
+.sw input:focus{border-color:#3b82f6}
+.sw input::placeholder{color:#475569}
+.tb-select{font-size:12px;padding:7px 8px;border-radius:6px;border:1px solid #1e2330;background:#141720;color:#e2e8f0;outline:none;font-family:'IBM Plex Sans',sans-serif;cursor:pointer}
+.tb-select:focus{border-color:#3b82f6}
+.rc{font-size:12px;color:#475569;white-space:nowrap;font-family:'IBM Plex Mono',monospace}
+.tw{background:#141720;border-radius:8px;border:1px solid #1e2330;overflow:auto;flex:1}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+thead th{padding:9px 12px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#475569;border-bottom:1px solid #1e2330;text-align:left;cursor:pointer;white-space:nowrap;user-select:none;font-family:'IBM Plex Mono',monospace;background:#141720;position:sticky;top:0}
+thead th:hover{color:#94a3b8}
+thead th.srt{color:#3b82f6}
+tbody tr{border-bottom:1px solid #181c28;cursor:pointer;transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#1a1f2e}
+tbody td{padding:9px 12px;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.c-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#475569;width:76px}
+.c-lead{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#334155;width:76px}
+.c-cl{font-weight:500;width:195px}
+.c-by{color:#64748b;width:155px}
+.c-f{width:185px}
+.fb{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;text-decoration:none;transition:opacity .15s;max-width:172px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:'IBM Plex Mono',monospace}
+.fb:hover{opacity:.75}
+.fb.pdf{background:#3b1a1a;color:#f87171;border:1px solid #5a2020}
+.fb.xl{background:#14301f;color:#4ade80;border:1px solid #1a4a2a}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:6px 2px;flex-shrink:0}
+.pi-info{font-size:12px;color:#475569;font-family:'IBM Plex Mono',monospace}
+.pb-wrap{display:flex;gap:3px}
+.pgb{width:28px;height:28px;border-radius:5px;border:1px solid #1e2330;background:#141720;color:#64748b;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;transition:all .15s}
+.pgb:hover:not(:disabled){border-color:#3b82f6;color:#3b82f6}
+.pgb.on{background:#1e3a5f;border-color:#3b82f6;color:#93c5fd;font-weight:600}
+.pgb:disabled{opacity:.3;cursor:default}
+.loading{display:flex;align-items:center;justify-content:center;height:200px;color:#475569;font-family:'IBM Plex Mono',monospace;font-size:13px;flex-direction:column;gap:12px}
+.spinner{width:28px;height:28px;border:2px solid #1e2330;border-top-color:#3b82f6;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="big-heart">❤️</div>
-    <h1>Rəna, gözəl qız</h1>
-    <div class="subtitle">
-      Sən ürəyimdə çox özəlsən 💖<br>
-      Rəna, nə olar şəklini mənə göndər 🙏💔<br>
-      <span style="font-size:22px;">🥺👉👈</span>
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">📁</div>
+    AEM_ARXIV
+  </div>
+  <div class="stat-chips">
+    <div class="chip">Cəmi <b id="hT">—</b></div>
+    <div class="chip pdf"><b id="hP">—</b> PDF</div>
+    <div class="chip xl"><b id="hX">—</b> Excel</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+    <div>
+      <div class="sec-label">Fayl növü</div>
+      <div class="type-btns">
+        <button class="tbtn a-all" id="tb-all" onclick="setType('')">Hamısı</button>
+        <button class="tbtn" id="tb-pdf" onclick="setType('pdf')">PDF</button>
+        <button class="tbtn" id="tb-xl" onclick="setType('xl')">Excel</button>
+      </div>
     </div>
-    <div class="note">Səni gülərkən görmək hər şeyə dəyər ✨</div>
+    <div>
+      <div class="sec-label">Şirkət</div>
+      <select class="sb-select" id="clientSel" onchange="applyFilters()">
+        <option value="">Bütün şirkətlər</option>
+      </select>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden">
+      <div class="sec-label">Əlavə edən</div>
+      <div class="person-list" id="personList"></div>
+    </div>
   </div>
 
-  <script>
-    const heartCount = 24;
-    for (let i = 0; i < heartCount; i++) {
-      const heart = document.createElement('div');
-      heart.className = 'floating-heart';
-      heart.textContent = Math.random() > 0.5 ? '❤' : '💗';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.fontSize = (18 + Math.random() * 28) + 'px';
-      heart.style.animationDuration = (5 + Math.random() * 7) + 's';
-      heart.style.animationDelay = (Math.random() * 6) + 's';
-      document.body.appendChild(heart);
-    }
-  </script>
+  <div class="content">
+    <div class="toolbar">
+      <div class="sw">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="srch" placeholder="Şirkət, fayl, lead ID, deal ID..." oninput="applyFilters()">
+      </div>
+      <select class="tb-select" id="bySelect" onchange="syncAndFilter()">
+        <option value="">Bütün əlavə edənlər</option>
+      </select>
+      <div class="rc" id="rc"></div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th class="c-id" onclick="sortBy('deal_id',this)">Deal ID<span></span></th>
+            <th class="c-lead" onclick="sortBy('lead_id',this)">Lead ID<span></span></th>
+            <th class="c-cl" onclick="sortBy('client_name',this)">Şirkət<span></span></th>
+            <th class="c-by" onclick="sortBy('added_by',this)">Əlavə edən<span></span></th>
+            <th class="c-f">Fayl</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="5"><div class="loading"><div class="spinner"></div>Yüklənir...</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pager">
+      <div class="pi-info" id="piInfo"></div>
+      <div class="pb-wrap" id="pbWrap"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let all=[],filt=[],actPerson='',actType='',sCol='deal_id',sDir=-1,pg=1;
+const PG=50;
+
+function ext(f){const e=f.split('.').pop().toLowerCase();return(e==='xlsx'||e==='xls')?'xl':e;}
+
+async function init(){
+  try{
+    const res=await fetch('/api/data');
+    all=await res.json();
+    buildSidebar();
+    applyFilters();
+  }catch(e){
+    document.getElementById('tbody').innerHTML='<tr><td colspan="5"><div class="loading">Məlumat yüklənə bilmədi</div></td></tr>';
+  }
+}
+
+function buildSidebar(){
+  const byP={};
+  all.forEach(r=>{
+    if(!byP[r.added_by])byP[r.added_by]={pdf:0,xl:0};
+    byP[r.added_by][ext(r.original_filename)==='pdf'?'pdf':'xl']++;
+  });
+
+  const pl=document.getElementById('personList');
+  pl.innerHTML='';
+  Object.entries(byP).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([name,c])=>{
+    const d=document.createElement('div');
+    d.className='pi'+(actPerson===name?' active':'');
+    d.innerHTML=`<span class="pi-name" title="${name}">${name}</span><div class="pi-badges">${c.pdf?`<span class="pb pdf">${c.pdf}</span>`:''} ${c.xl?`<span class="pb xl">${c.xl}</span>`:''}</div>`;
+    d.onclick=()=>{
+      actPerson=(actPerson===name?'':name);
+      document.getElementById('bySelect').value=actPerson;
+      buildSidebar();applyFilters();
+    };
+    pl.appendChild(d);
+  });
+
+  const clients=[...new Set(all.map(r=>r.client_name))].sort();
+  const cs=document.getElementById('clientSel');
+  const cv=cs.value;
+  cs.innerHTML='<option value="">Bütün şirkətlər</option>';
+  clients.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;if(c===cv)o.selected=true;cs.appendChild(o);});
+
+  const persons=[...new Set(all.map(r=>r.added_by))].sort();
+  const bs=document.getElementById('bySelect');
+  const bv=bs.value;
+  bs.innerHTML='<option value="">Bütün əlavə edənlər</option>';
+  persons.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;if(p===bv)o.selected=true;bs.appendChild(o);});
+}
+
+function syncAndFilter(){
+  actPerson=document.getElementById('bySelect').value;
+  buildSidebar();applyFilters();
+}
+
+function applyFilters(){
+  const q=document.getElementById('srch').value.toLowerCase().trim();
+  const client=document.getElementById('clientSel').value;
+  filt=all.filter(r=>{
+    const e=ext(r.original_filename);
+    if(actType&&e!==actType)return false;
+    if(client&&r.client_name!==client)return false;
+    if(actPerson&&r.added_by!==actPerson)return false;
+    if(q&&!(r.client_name.toLowerCase().includes(q)||r.original_filename.toLowerCase().includes(q)||String(r.lead_id).includes(q)||String(r.deal_id).includes(q)))return false;
+    return true;
+  });
+  sortData();pg=1;render();
+}
+
+function sortData(){
+  filt.sort((a,b)=>{
+    let av=a[sCol],bv=b[sCol];
+    if(typeof av==='string'){av=av.toLowerCase();bv=bv.toLowerCase();}
+    return av<bv?sDir:av>bv?-sDir:0;
+  });
+}
+
+function sortBy(col,th){
+  sDir=(sCol===col?-sDir:1);sCol=col;
+  document.querySelectorAll('thead th').forEach(t=>{t.classList.remove('srt');t.querySelector('span').textContent='';});
+  th.classList.add('srt');th.querySelector('span').textContent=sDir===1?' ↑':' ↓';
+  sortData();render();
+}
+
+function setType(t){
+  actType=t;
+  ['all','pdf','xl'].forEach(x=>{
+    const b=document.getElementById('tb-'+x);
+    b.className='tbtn'+((t===''&&x==='all')||(t===x)?' a-'+x:'');
+  });
+  applyFilters();
+}
+
+function render(){
+  const pdfs=all.filter(r=>ext(r.original_filename)==='pdf').length;
+  document.getElementById('hT').textContent=all.length;
+  document.getElementById('hP').textContent=pdfs;
+  document.getElementById('hX').textContent=all.length-pdfs;
+  document.getElementById('rc').textContent=filt.length+' nəticə';
+
+  const st=(pg-1)*PG,pd=filt.slice(st,st+PG);
+  if(pd.length===0){
+    document.getElementById('tbody').innerHTML='<tr><td colspan="5"><div class="loading">Nəticə tapılmadı</div></td></tr>';
+    document.getElementById('piInfo').textContent='';
+    document.getElementById('pbWrap').innerHTML='';
+    return;
+  }
+
+  document.getElementById('tbody').innerHTML=pd.map(r=>{
+    const e=ext(r.original_filename);
+    const url='/files/'+encodeURIComponent(r.zip_filename);
+    const icon=e==='pdf'?'🔴':'🟢';
+    return `<tr onclick="window.open('${url}','_blank')">
+      <td class="c-id">#${r.deal_id}</td>
+      <td class="c-lead">${r.lead_id}</td>
+      <td class="c-cl" title="${r.client_name}">${r.client_name}</td>
+      <td class="c-by" title="${r.added_by}">${r.added_by}</td>
+      <td class="c-f"><a class="fb ${e}" href="${url}" target="_blank" onclick="event.stopPropagation()">${icon} ${r.original_filename}</a></td>
+    </tr>`;
+  }).join('');
+
+  const tp=Math.ceil(filt.length/PG);
+  document.getElementById('piInfo').textContent=`${st+1}–${Math.min(st+PG,filt.length)} / ${filt.length}`;
+  const pb=document.getElementById('pbWrap');
+  let h=`<button class="pgb" onclick="goPg(${pg-1})" ${pg<=1?'disabled':''}>‹</button>`;
+  pgRange(pg,tp).forEach(p=>{h+=p==='...'?`<button class="pgb" disabled>…</button>`:`<button class="pgb${p===pg?' on':''}" onclick="goPg(${p})">${p}</button>`;});
+  h+=`<button class="pgb" onclick="goPg(${pg+1})" ${pg>=tp?'disabled':''}>›</button>`;
+  pb.innerHTML=h;
+}
+
+function pgRange(c,t){
+  if(t<=7)return Array.from({length:t},(_,i)=>i+1);
+  if(c<=4)return[1,2,3,4,5,'...',t];
+  if(c>=t-3)return[1,'...',t-4,t-3,t-2,t-1,t];
+  return[1,'...',c-1,c,c+1,'...',t];
+}
+
+function goPg(p){const t=Math.ceil(filt.length/PG);if(p<1||p>t)return;pg=p;render();window.scrollTo(0,0);}
+
+init();
+</script>
 </body>
 </html>
